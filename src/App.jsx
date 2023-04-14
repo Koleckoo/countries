@@ -13,11 +13,10 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar/>
-        <Detail/>
-        {/* <Routes> */}
-          {/* <Route path='/' element={<Content/>}/> */}
-          {/* <Route path='/:countryName' element={<Detail/>}/> */}
-        {/* </Routes> */}
+        <Routes>
+          <Route path='/' element={<Content/>}/>
+          <Route path='/:countryName' element={<Detail/>}/>
+        </Routes>
       </BrowserRouter>
         
       

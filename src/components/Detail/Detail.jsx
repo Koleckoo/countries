@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import {BsArrowLeft} from 'react-icons/bs'
+import { Link, useParams } from "react-router-dom";
 
 export default function Detail() {
 
     const [country, setCountry] = useState()
+    let {countryName} = useParams()
 
     const loadCountry = async() => {
 
         try {
-            const response = await fetch(`https://restcountries.com/v3.1/name/deutschland`)
+            const response = await fetch(`https://restcountries.com/v3.1/name/${countryName.toLowerCase()}`)
             const data = await response.json();
-            setCountry(data)
+            setCountry(data['0'])
         } catch (error) {
             console.log(error);
         }
@@ -23,28 +25,49 @@ export default function Detail() {
     },[])
 
     return country ? (
-    <section>
-        {console.log(Object.values(country['0'].languages))}
+    <section className="flex flex-col">
+        {/* {console.log(country.borders)} */}
         <div>
-            <button className="flex gap-2 items-center ml-20 mt-20 bg-white px-7 py-1 rounded shadow"><BsArrowLeft/> Back</button>
+            <Link to='/' className="flex gap-2 w-32 items-center ml-20 mt-20 bg-white px-7 py-1 rounded shadow"><BsArrowLeft/> Back</Link>
         </div>
-        <div>
-            <div>
-                <img src={country['0'].flags.png} alt="" />
+        <div className="flex flex-col items-center gap-10 lg:flex-row lg:justify-center lg:gap-40 mt-10">
+            <div className="shadow w-96 h-72 ">
+                <img className="object-cover w-full h-full " src={country.flags.png} alt={country.name.common + 'flag'} />
             </div>
-            <div>
-                <h3>{country['0'].name.common}</h3>
-                <p>{Object.values(country['0'].name.nativeName)[0].official}</p>
-                <p>{(country['0'].population).toLocaleString('en-US', {minimumFractionDigits: 0})}</p>
-                <p>{country['0'].region}</p>
-                <p>{country['0'].subregion}</p>
-                <p>{country['0'].capital}</p>
-                <p>{country['0'].tld}</p>
-                <p>{Object.values(country['0'].currencies)[0].name}</p>
-                <p>{country['0'].languages.map((language) => {
-                    return <p>{language}</p>
-                })}</p>
-                
+            <div className="flex-col p-4">
+                <h3 className="font-extrabold text-3xl mb-6">{country.name.common}</h3>
+                <div className="flex flex-col lg:flex-row gap-14 lg:gap-32 ">
+                    <div className="">
+                        <p><strong>Native Name:</strong>  {Object.values(country.name.nativeName)[0].official}</p>
+                        <p><strong>Population:</strong> {(country.population).toLocaleString('en-US', {minimumFractionDigits: 0})}</p>
+                        <p><strong>Region:</strong> {country.region}</p>
+                        <p><strong>Sub Region:</strong> {country.subregion}</p>
+                        <p><strong>Capital:</strong> {country.capital}</p>
+                        
+                    </div>
+                    <div>
+                        
+                        <p><strong>Top Level Domain:</strong> {country.tld}</p>
+                        <p><strong>Main Currency:</strong> {Object.values(country.currencies)[0].name}</p>
+                        <p><strong>Languages:</strong> {Object.values(country.languages).length > 1 ? Object.values(country.languages).map((language) => {
+                        return language + ', '
+                    }) 
+                    : 
+                        Object.values(country.languages)
+                        }</p>
+                        
+                    </div>
+                </div>
+                <div>
+                <p className="mt-14"><strong>Borders:</strong>  {country.borders && country.borders.length > 0 ? 
+                        (country.borders).length > 1 ? (country.borders).map((border, index) => {
+                        return <button className="px-8 py-2 mr-2 rounded shadow-md bg-white" disabled key={index}>{border}</button>
+                    }) 
+                    : 
+                        <button className="px-8 py-2 rounded shadow-md bg-white" disabled>{country.borders[0]}</button>
+                        : "no borders"}
+                        </p>
+                </div>
             </div>
         </div>
     </section>)

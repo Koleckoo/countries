@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 
 export default function Content () {
@@ -63,8 +64,8 @@ export default function Content () {
 
     return countries ? 
     <section>
-        <div className="flex justify-between">
-            <div className="mt-16 ml-20 w-96">
+        <div className="flex flex-col justify-center items-center md:flex-row md:justify-between">
+            <div className="mt-16 md:ml-20 w-96">
             <div className="relative">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -72,7 +73,7 @@ export default function Content () {
                 <input onChange={handleSearchChange} type="search" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border rounded-lg bg-white shadow" placeholder="Seach for a country..." />
             </div>
             </div>
-            <div className="mt-16 mr-20 shadow rounded-xl">
+            <div className="mt-16 md:mr-20 shadow rounded-xl">
                 <select onChange={handleRegionChange} className="p-5 rounded-xl" name="region_select" id="region_select">
                     <option value="" disabled selected>Filter by Region</option>
                     <option value="africa">Africa</option>
@@ -86,7 +87,7 @@ export default function Content () {
         <div className="flex flex-wrap justify-evenly">
             {countries.map((country, index) => {
                 return (
-                <button key={index} className="flex-col items-center rounded-2xl bg-white w-96 mt-16 overflow-hidden shadow">              
+                <Link to={`/${country.name.common}`} key={index} className="flex-col items-center rounded-2xl bg-white w-96 mt-16 overflow-hidden shadow">              
                     <div className="shadow">
                         <img className="object-cover h-64 w-96 " src={country.flags.png} alt="country flag" />
                     </div>
@@ -96,7 +97,7 @@ export default function Content () {
                         <p><strong>Region: </strong>{country.region}</p>
                         <p><strong>Capital: </strong>{country.capital}</p>
                     </div>           
-                </button>)
+                </Link>)
             })}
         </div>
     </section>
