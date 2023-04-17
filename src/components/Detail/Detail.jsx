@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {BsArrowLeft} from 'react-icons/bs'
 import { Link, useParams } from "react-router-dom";
+import ThemeContext from "../Context/ThemeContext";
 
 export default function Detail() {
 
     const [country, setCountry] = useState()
     let {countryName} = useParams()
+    const {theme, setTheme} = useContext(ThemeContext)
 
     const loadCountry = async() => {
 
@@ -28,15 +30,15 @@ export default function Detail() {
     <section className="flex flex-col">
         {/* {console.log(country.borders)} */}
         <div>
-            <Link to='/' className="flex gap-2 w-32 items-center ml-20 mt-20 bg-white px-7 py-1 rounded shadow"><BsArrowLeft/> Back</Link>
+            <Link to='/' className={`flex gap-2 w-32 items-center ml-20 mt-20 ${theme === 'light' ? 'text-gray-900' : 'text-white'} ${theme === 'light' ? 'bg-white' : 'bg-gray-700'} px-7 py-1 rounded shadow`}><BsArrowLeft/> Back</Link>
         </div>
         <div className="flex flex-col items-center gap-10 lg:flex-row lg:justify-center lg:gap-40 mt-10">
             <div className="shadow w-96 h-72 ">
                 <img className="object-cover w-full h-full " src={country.flags.png} alt={country.name.common + 'flag'} />
             </div>
-            <div className="flex-col p-4">
+            <div className={`flex-col p-4 ${theme === 'light' ? 'text-gray-900' : 'text-white'} `}>
                 <h3 className="font-extrabold text-3xl mb-6">{country.name.common}</h3>
-                <div className="flex flex-col lg:flex-row gap-14 lg:gap-32 ">
+                <div className='flex flex-col lg:flex-row gap-14 lg:gap-32 '>
                     <div className="">
                         <p><strong>Native Name:</strong>  {Object.values(country.name.nativeName)[0].official}</p>
                         <p><strong>Population:</strong> {(country.population).toLocaleString('en-US', {minimumFractionDigits: 0})}</p>
@@ -61,10 +63,10 @@ export default function Detail() {
                 <div>
                 <p className="mt-14"><strong>Borders:</strong>  {country.borders && country.borders.length > 0 ? 
                         (country.borders).length > 1 ? (country.borders).map((border, index) => {
-                        return <button className="px-8 py-2 mr-2 rounded shadow-md bg-white" disabled key={index}>{border}</button>
+                        return <button className={`px-8 py-2 mr-2 rounded shadow-md ${theme === 'light' ? 'text-gray-900' : 'text-white'} ${theme === 'light' ? 'bg-white' : 'bg-gray-700'}`} disabled key={index}>{border}</button>
                     }) 
                     : 
-                        <button className="px-8 py-2 rounded shadow-md bg-white" disabled>{country.borders[0]}</button>
+                        <button className={`px-8 py-2 rounded shadow-md ${theme === 'light' ? 'text-gray-900' : 'text-white'} ${theme === 'light' ? 'bg-white' : 'bg-gray-700'}`} disabled>{country.borders[0]}</button>
                         : "no borders"}
                         </p>
                 </div>
