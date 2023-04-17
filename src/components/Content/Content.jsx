@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ThemeContext from "../Context/ThemeContext";
 
 
 export default function Content () {
     const [countries, setCountries] = useState([]);
     const [region, setRegion] = useState(null)
     const [search, setSearch] = useState(null)
+    const {theme, setTheme} = useContext(ThemeContext)
 
 
     // loading all countries
@@ -70,11 +72,11 @@ export default function Content () {
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
-                <input onChange={handleSearchChange} type="search" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border rounded-lg bg-white shadow" placeholder="Seach for a country..." />
+                <input onChange={handleSearchChange} type="search" id="default-search" className={`block w-full p-4 pl-10 text-sm ${theme === 'light' ? 'text-gray-900' : 'text-white'}  border rounded-lg ${theme === 'light' ? 'bg-white' : 'bg-gray-700'}  shadow`} placeholder="Seach for a country..." />
             </div>
             </div>
-            <div className="mt-16 md:mr-20 shadow rounded-xl">
-                <select onChange={handleRegionChange} className="p-5 rounded-xl" name="region_select" id="region_select">
+            <div className={`mt-16 md:mr-20 shadow rounded-xl `}>
+                <select onChange={handleRegionChange} className={`p-5 rounded-xl ${theme === 'light' ? 'text-gray-900' : 'text-white'} ${theme === 'light' ? 'bg-white' : 'bg-gray-700'}` } name="region_select" id="region_select">
                     <option value="" disabled selected>Filter by Region</option>
                     <option value="africa">Africa</option>
                     <option value="america">America</option>
@@ -87,7 +89,7 @@ export default function Content () {
         <div className="flex flex-wrap justify-evenly">
             {countries.map((country, index) => {
                 return (
-                <Link to={`/${country.name.common}`} key={index} className="flex-col items-center rounded-2xl bg-white w-96 mt-16 overflow-hidden shadow">              
+                <Link to={`/${country.name.common}`} key={index} className={`flex-col items-center rounded-2xl ${theme === 'light' ? 'text-gray-900' : 'text-white'} ${theme === 'light' ? 'bg-white' : 'bg-gray-700'} w-96 mt-16 overflow-hidden shadow`}>              
                     <div className="shadow">
                         <img className="object-cover h-64 w-96 " src={country.flags.png} alt="country flag" />
                     </div>
